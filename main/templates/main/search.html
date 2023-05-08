@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+{% block content %}
+  <center>
+    {% if searched %}
+      <h2>Результаты поиска по "{{ searched }}"</h2>
+      {% if error %}
+        <p>{{ error }}</p>
+      {% else %}
+        {% if posts %}
+          <ul>
+          {% for post in posts %}
+    <div class="post">
+        <div class="post-header">
+            <div class="avatar-wrapper">
+                <a href="{% url 'someones_page' user_id=user.id %}">
+                    {% if profile.user.profileimg %}
+                    <img class="avatar" src="{{user.profile.image.url }}">
+                    {% else %}
+                    <img class="avatar" src="blank-profile-picture.jpg">
+                    {% endif %}
+                </a>
+                <a class="author" href="#">{{ post.user }}</a>
+                <small class="text-muted">{{ post.created_at|date:"F d, Y" }}</small>
+            </div>
+        </div>
+        <p class="article-content">{{ post.content }}</p>
+        <div class="post-body">
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}">
+            {% endif %}
+            {% if post.video %}
+            <video width="320" height="240" controls>
+                <source src="{{ post.video.url }}">
+            </video>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+          </ul>
+        {% else %}
+          <p>Похоже что {{ searched }} еще не опубликовал ни одного поста.</p>
+        {% endif %}
+      {% endif %}
+    {% else %}
+      <h1>Пожалуйста введите запрос или вернитесь на главную страницу.</h1>
+    {% endif %}
+  </center>
+{% endblock %}
