@@ -21,6 +21,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='images/', blank=True)
     video = models.FileField(upload_to='videos/', blank=True)
+    no_of_likes = models.IntegerField(default=0)
 
     def str(self):
         return self.title
@@ -31,3 +32,11 @@ class Post(models.Model):
     class Meta:
         verbose_name = "Пост"
         verbose_name_plural = "Посты"
+
+
+class LikePost(models.Model):
+    post_id = models.CharField(max_length=500)
+    username = models.CharField(max_length=100)
+
+    def str(self):
+        return self.username

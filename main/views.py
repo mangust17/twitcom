@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from .models import *
 from . import forms
+from .models import *
 from .forms import PostForm, ProfileForm
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
@@ -119,6 +120,26 @@ def search(request):
         return render(request, 'main/search.html')
 
 
+@login_required(login_url='signin')
+def like(request):
+    username = request.user.username
+    post_id = request.GET.get('post_id')
+
+    post = Post.objects.get(id=post_id)
+    like_filter = LikePost.objects.filter(post_id=post_id, username=username).first()
+    if like_filter == None:
+        new_like = LikePost.objects.create(post_id=post_id, username=username)
+        new_like.save()
+        post.no_of_likes += 1
+        post.save()
+    else:
+        like_filter.delete()
+        post.no_of_likes -= 1
+        post.save()
+    return redirect('/')
+
+
+
 class PostsUpdateView(UpdateView):
     model = Post
     template_name = 'main/new_post.html'
@@ -127,7 +148,6 @@ class PostsUpdateView(UpdateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
-
 
 
 class PostsListView(ListView):

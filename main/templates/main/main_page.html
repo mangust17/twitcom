@@ -2,35 +2,45 @@
 
 {% block content %}
 <div class="post-container">
-     {% for post in posts %}
-            <div class="post">
-                <div class="post-header">
-                    <div class="avatar-wrapper">
-                        <a href="profile/{{ post.user }}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                            {% if post.user.profile.profileimg %}
-                                <img class="avatar" src="{{ post.user.profile.profileimg.url }}">
-                            {% else %}
-                                <img class="avatar" src="blank-profile-picture.jpg">
-                            {% endif %}
-                        </a>
-                    </div>
-                    <h1 class="author">{{ post.user }}</h1>
-                </div>
-                <div>
-                    <p>{{post.title}}</p>
-                    <p>{{ post.content }}</p>
-                </div>
-                <div class="post-body">
-                    {% if post.image %}
-                        <img src="{{ post.image.url }}" alt="{{ post.title }}">
+    {% for post in posts %}
+    <div class="post">
+        <div class="post-header">
+            <div class="avatar-wrapper">
+                <a href="profile/{{ post.user }}"
+                   class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    {% if post.user.profile.profileimg %}
+                    <img class="avatar" src="{{ post.user.profile.profileimg.url }}">
+                    {% else %}
+                    <img class="avatar" src="blank-profile-picture.jpg">
                     {% endif %}
-                    {% if post.video %}
-                        <video width="320" height="240" controls>
-                            <source src="{{ post.video.url }}">
-                        </video>
-                    {% endif %}
-                </div>
+                </a>
             </div>
-        {% endfor %}
+            <h1 class="author">{{ post.user }}</h1>
+        </div>
+        <div>
+            <p>{{post.title}}</p>
+            <p>{{ post.content }}</p>
+        </div>
+        <div class="post-body">
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}">
+            {% endif %}
+            {% if post.video %}
+            <video width="320" height="240" controls>
+                <source src="{{ post.video.url }}">
+            </video>
+            {% endif %}
+            <div>
+                <a href="/like?post_id={{post.id}}" class="btn flex items-center space-x-8 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                        <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                    </svg>
+                </a>
+            </div>
+            <p>Понравилось {{post.no_of_likes}} людям</p>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

@@ -11,6 +11,7 @@ urlpatterns = [
     path('log_out', views.log_out, name='log_out'),
     path('settings', views.edit_profile, name='settings'),
     path('search', views.search, name='search'),
+    path('like', views.like, name='like'),
     path('<int:pk>/update', views.PostsUpdateView.as_view(), name='post_update'),
     path('<int:pk>/delete', views.PostsDeleteView.as_view(), name='post_delete'),
 
