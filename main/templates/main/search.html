@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% block content %}
+<div style="color: #fff;">
   <center>
     {% if searched %}
       <h2>Результаты поиска по "{{ searched }}"</h2>
@@ -45,4 +46,5 @@
       <h1>Пожалуйста введите запрос или вернитесь на главную страницу.</h1>
     {% endif %}
   </center>
+    </div>
 {% endblock %}

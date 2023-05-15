@@ -15,9 +15,12 @@ def main_page(request):
 
 
 def someones_page(request, user_id):
-    user = User.objects.get(id=user_id)
+    user = get_object_or_404(User, id=user_id)
     posts = Post.objects.filter(user=user)
-    return render(request, 'main/someone.html', {'posts': posts})
+    return render(request, 'main/user_posts.html', {'user': user, 'posts': posts})
+
+
+
 
 
 @login_required(login_url='signin')
@@ -147,7 +150,8 @@ class PostsUpdateView(UpdateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        return super().form_valid(form)
+        return form.save(user=self.request.user)
+
 
 
 class PostsListView(ListView):

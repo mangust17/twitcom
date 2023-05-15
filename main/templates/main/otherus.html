@@ -1,19 +1,21 @@
 {% extends 'main/base.html' %}
+
 {% block title %}
-{{user_profile.user.username}}
+{{ user.username }}
 {% endblock %}
+
 {% block content %}
 <div>
-<div class="col-md-4 mx-auto text-center">
-    <div class="card" style="background-color: #2c2c2c; padding: 2.5%; color: #fff; margin: 20px 10px; border: none;">
-        <img class="card-img-top rounded-circle mx-auto d-block mt-4" style="width:60%"
-             src="{{ user.profile.profileimg.url }}" alt="Profile image">
-        <div class="card-body text-center">
-            <h3>{{ user.username }}</h3>
-            <p class="card-text">{{ profile.bio }}</p>
+    <div class="col-md-4 mx-auto text-center">
+        <div class="card" style="background-color: #2c2c2c; padding: 2.5%; color: #fff; margin: 20px 10px; border: none;">
+            <img class="card-img-top rounded-circle mx-auto d-block mt-4" style="width:60%"
+                 src="{{ user.profile.profileimg.url }}" alt="Profile image">
+            <div class="card-body text-center">
+                <h3>{{ user.username }}</h3>
+                <p class="card-text">{{ user.profile.bio }}</p>
+            </div>
         </div>
     </div>
-</div>
     {% if posts %}
     <div class="post-container">
         {% for post in posts %}
@@ -28,7 +30,7 @@
                         {% endif %}
                     </a>
                 </div>
-                <h1 class="author">{{ post.user }}</h1>
+                <h1 class="author">{{ post.user.username }}</h1>
             </div>
             <div>
                 <p>{{ post.content }}</p>
@@ -47,7 +49,7 @@
         {% endfor %}
     </div>
     {% else %}
-    <p>Пользователь пока не опубликовали ни одного поста.</p>
+    <p>Пользователь пока не опубликовал ни одного поста.</p>
     {% endif %}
-    </div>
-    {% endblock %}
+</div>
+{% endblock %}

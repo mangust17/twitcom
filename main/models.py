@@ -1,16 +1,18 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 User = get_user_model()
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(blank=True)
     profileimg = models.ImageField(upload_to='profile_images', default='blank-profile-picture.png')
 
-    def str(self):
+    def __str__(self):
         return self.user.username
+
 
 
 class Post(models.Model):
@@ -27,7 +29,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return 'home'
+        return reverse('home')
 
     class Meta:
         verbose_name = "Пост"
