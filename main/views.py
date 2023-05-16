@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRe
 from .models import *
 from . import forms
 from .models import *
-from .forms import PostForm, ProfileForm
+from .forms import PostForm, ProfileForm, PostUpdateForm
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -18,9 +18,6 @@ def someones_page(request, user_id):
     user = get_object_or_404(User, id=user_id)
     posts = Post.objects.filter(user=user)
     return render(request, 'main/user_posts.html', {'user': user, 'posts': posts})
-
-
-
 
 
 @login_required(login_url='signin')
@@ -61,6 +58,8 @@ def create_us(request):
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.save()
+                profile = Profile.objects.create(user=user)
+                profile.save()
                 messages.success(request, 'Пользователь создан!')
                 auth.login(request, user)
                 return redirect('/')
@@ -142,15 +141,10 @@ def like(request):
     return redirect('/')
 
 
-
 class PostsUpdateView(UpdateView):
     model = Post
     template_name = 'main/new_post.html'
-    form_class = PostForm
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return form.save(user=self.request.user)
+    form_class = PostUpdateForm
 
 
 

@@ -39,3 +39,20 @@ class ProfileForm(forms.ModelForm):
         if commit:
             profile.save()
         return profile
+
+class PostUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'image', 'video']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите название поста'}),
+            'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Введите содержимое поста'}),
+            'image': forms.FileInput(attrs={'class': 'form-control-file'}),
+        }
+
+    def save(self, user=None):
+        post = super().save(commit=False)
+        if user:
+            post.user = user
+        post.save()
+        return post
